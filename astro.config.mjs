@@ -5,7 +5,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://alexeypav.github.io',
-	base: 'alexeypav',
+	site: 'https://alexey.pavlenko.co.nz',
 	integrations: [mdx(), sitemap()],
 });
