@@ -1,8 +1,20 @@
 ---
-title: 'Replatforming/Containerising a .net Application'
+title: 'Wang APC - Getting it working'
 description: 'A project to replatform a .net application, a mix of .net Framework and .net (core)'
-pubDate: 'March 27 2025'
-heroImage: '/oldpc.jpg'
+pubDate: 'April 04 2025'
+heroImage: '/wangapc1.jpg'
 ---
 
-Reasons: Efficiency and cost
+I've had a ever changing collection of vintage computers for quite some time, one of these was a Wang APC (Advanced Professional Computer) - I'd had acquired it with a bulk lot of computers bought of Trade Me.
+After testing a few of the computers I got to the Wang, unfortunately it wouldn't show any signs of life apart from the AC fan in the power supply.
+
+A few things I tried:
+Re-seat ram and clean the boards with iso.
+Re-cap the PSU (only the low voltage caps as I had the correct values for those already)
+
+This didn't help so the Wang went back on the shelf to be dealt with later.
+
+About 2 years later I saw a post on the local Vintage Computer Facebook page, someone was offering a semi-working wang, with a monitor, I grabbed it (paying of course), and brought home.
+The issues with the new wang was it wouldn't boot, but it did show error codes on the keybaord and in made some beeps! Life!
+
+(TBC)
