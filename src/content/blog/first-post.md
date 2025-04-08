@@ -17,6 +17,6 @@ This didn't help so the Wang went back on the shelf to be dealt with later.
 About 2 years later I saw a post on the local Vintage Computer Facebook page, someone was offering a semi-working wang, with a monitor, I jumped on the opportunity and bought it.
 The issue with the new Wang was it wouldn't boot, but it did show error codes on the keybaord and in made some beeps! Life!
 
-After I had done some debugging by swapping the boards/ram and PSU around between this new machine and my broken one, I was able to have a complete working Wang, I used the RAM and high voltage PSU board from my original Wang with all the rest of the new Wang.
+After I had done some debugging by swapping the boards/ram and PSU around between this new machine and my broken one, I was able to have a complete working Wang, I used the RAM and high voltage PSU board from my original Wang with the rest of the new Wang.
 
 TBC
