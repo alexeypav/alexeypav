@@ -3,18 +3,362 @@ import Layout from "../layouts/BlogPost.astro";
 ---
 
 <Layout
-	title="Public Apps"
-	description="Some apps I've made"
+	title="Personal Projects"
+	description="Personal projects and apps I've worked on"
 	pubDate={new Date("June 26 2026")}
 >
-	<p>
-		Some web apps I have made that are public <br />
-	</p>
-	<ul>
-		<li>
-			Property Listing Helper - find, save and export property info and repayments from realestate.co.nz listings <a
-				href="https://propertyhelpernz.appvia.net/"
-				>Listing Helper</a>
-		</li>
-	</ul>
+	<section>
+		<h2>Projects</h2>
+		<ul class="project-list">
+			<li>
+				<a href="https://propertyhelpernz.appvia.net/"><strong>Property Listing Helper</strong></a>
+				— Find, save and export property info and repayment estimates from realestate.co.nz listings.
+			</li>
+		</ul>
+	</section>
+
+	<section class="dashboard">
+		<h2 class="dashboard-title">
+			Homelab
+			<span class="live-badge">
+				<span class="live-dot"></span>LIVE
+			</span>
+		</h2>
+		<p class="dashboard-desc">Real-time stats from my home server</p>
+
+		<div id="dash-loading" class="dash-state">Loading stats…</div>
+		<div id="dash-error" class="dash-state dash-error" style="display:none">Unable to reach stats endpoint.</div>
+
+		<div id="dash-content" style="display:none">
+			<div class="stats-grid">
+				<div class="stat-card">
+					<div class="stat-label">Uptime</div>
+					<div class="stat-value mono" id="s-uptime">—</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">CPU</div>
+					<div class="stat-value" id="s-cpu">—</div>
+					<div class="bar-track"><div class="bar-fill" id="b-cpu"></div></div>
+					<div class="stat-sub" id="s-cpu-load">—</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">Memory</div>
+					<div class="stat-value" id="s-mem">—</div>
+					<div class="bar-track"><div class="bar-fill" id="b-mem"></div></div>
+					<div class="stat-sub" id="s-mem-detail">—</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-label">Disk</div>
+					<div class="stat-value" id="s-disk">—</div>
+					<div class="bar-track"><div class="bar-fill" id="b-disk"></div></div>
+					<div class="stat-sub" id="s-disk-detail">—</div>
+				</div>
+			</div>
+
+			<div class="gpu-card">
+				<div class="gpu-name" id="s-gpu-name">GPU</div>
+				<div class="stats-grid gpu-grid">
+					<div class="stat-card small">
+						<div class="stat-label">Temperature</div>
+						<div class="stat-value" id="s-gpu-temp">—</div>
+					</div>
+					<div class="stat-card small">
+						<div class="stat-label">Utilization</div>
+						<div class="stat-value" id="s-gpu-util">—</div>
+					</div>
+					<div class="stat-card small">
+						<div class="stat-label">VRAM</div>
+						<div class="stat-value" id="s-gpu-vram">—</div>
+					</div>
+					<div class="stat-card small">
+						<div class="stat-label">Power</div>
+						<div class="stat-value" id="s-gpu-power">—</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="containers-section">
+				<h3>Containers</h3>
+				<div id="s-containers" class="containers-grid"></div>
+			</div>
+
+			<div class="refresh-note">Refreshes every 30s &middot; <span id="s-updated">—</span></div>
+		</div>
+	</section>
 </Layout>
+
+<style>
+	/* Projects */
+	.project-list {
+		padding-left: 0;
+		list-style: none;
+	}
+	.project-list li {
+		margin-bottom: 0.5em;
+	}
+
+	/* Dashboard layout */
+	.dashboard {
+		margin-top: 2.5rem;
+		border-top: 1px solid rgb(var(--gray-light));
+		padding-top: 1.5rem;
+	}
+	.dashboard-title {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-bottom: 0.2rem;
+	}
+	.live-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 0.4em;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		background: #dcfce7;
+		color: #15803d;
+		border-radius: 20px;
+		padding: 4px 10px;
+		vertical-align: middle;
+	}
+	.live-dot {
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #22c55e;
+		animation: pulse 1.8s ease-in-out infinite;
+	}
+	@keyframes pulse {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.25; }
+	}
+	.dashboard-desc {
+		color: rgb(var(--gray));
+		font-size: 0.82em;
+		margin-top: 0;
+		margin-bottom: 1.5rem;
+	}
+	.dash-state {
+		color: rgb(var(--gray));
+		font-size: 0.9em;
+		padding: 0.5rem 0;
+	}
+	.dash-error { color: #dc2626; }
+
+	/* Stats grid */
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.7rem;
+		margin-bottom: 0.7rem;
+	}
+	.stat-card {
+		background: rgb(var(--gray-light));
+		border-radius: 10px;
+		padding: 0.85rem 1rem;
+	}
+	.stat-card.small {
+		padding: 0.65rem 0.85rem;
+	}
+	.stat-label {
+		font-size: 0.62em;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		color: rgb(var(--gray));
+		margin-bottom: 0.2rem;
+	}
+	.stat-value {
+		font-size: 1.1em;
+		font-weight: 700;
+		color: rgb(var(--black));
+		line-height: 1.2;
+	}
+	.mono { font-family: monospace; }
+	.stat-sub {
+		font-size: 0.62em;
+		color: rgb(var(--gray));
+		margin-top: 0.35rem;
+	}
+
+	/* Progress bar */
+	.bar-track {
+		height: 4px;
+		background: rgba(96, 115, 159, 0.2);
+		border-radius: 2px;
+		margin-top: 0.5rem;
+		overflow: hidden;
+	}
+	.bar-fill {
+		height: 100%;
+		border-radius: 2px;
+		background: var(--accent);
+		width: 0%;
+		transition: width 0.5s ease;
+	}
+
+	/* GPU card */
+	.gpu-card {
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 12px;
+		padding: 1rem;
+		margin-bottom: 0.7rem;
+	}
+	.gpu-name {
+		font-size: 0.65em;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: rgb(var(--gray));
+		margin-bottom: 0.7rem;
+	}
+	.gpu-grid {
+		grid-template-columns: repeat(4, 1fr);
+		margin-bottom: 0;
+	}
+
+	/* Containers */
+	.containers-section h3 {
+		font-size: 0.65em;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+		color: rgb(var(--gray));
+		margin-bottom: 0.5rem;
+		margin-top: 0.25rem;
+	}
+	.containers-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.container-row {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		background: rgb(var(--gray-light));
+		border-radius: 8px;
+		padding: 0.5rem 0.85rem;
+		font-size: 0.78em;
+	}
+	.c-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+	.c-dot.healthy { background: #22c55e; }
+	.c-dot.up { background: #60a5fa; }
+	.c-dot.down { background: #ef4444; }
+	.c-name {
+		font-weight: 700;
+		color: rgb(var(--black));
+		flex: 1;
+	}
+	.c-status {
+		color: rgb(var(--gray));
+	}
+
+	.refresh-note {
+		font-size: 0.62em;
+		color: rgb(var(--gray));
+		text-align: right;
+		margin-top: 0.75rem;
+	}
+
+	@media (max-width: 560px) {
+		.gpu-grid { grid-template-columns: repeat(2, 1fr); }
+	}
+	@media (max-width: 400px) {
+		.stats-grid { grid-template-columns: 1fr; }
+	}
+</style>
+
+<script>
+	function toTitle(s: string) {
+		return s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+	}
+
+	function dotClass(status: string) {
+		const s = status.toLowerCase();
+		if (s.includes('healthy')) return 'healthy';
+		if (s.startsWith('up')) return 'up';
+		return 'down';
+	}
+
+	function set(id: string, val: string) {
+		const el = document.getElementById(id);
+		if (el) el.textContent = val;
+	}
+
+	function setBar(id: string, pct: number) {
+		const el = document.getElementById(id) as HTMLElement | null;
+		if (el) el.style.width = Math.min(100, pct) + '%';
+	}
+
+	interface Container { name: string; status: string; image: string; }
+	interface Stats {
+		uptime: string;
+		cpu: { usage_percent: number; load_1m: number; load_5m: number; load_15m: number; cores: number };
+		memory: { total_gb: number; used_gb: number; percent: number };
+		disk: { total_gb: number; used_gb: number; percent: number };
+		gpu: { name: string; temperature_c: number; utilization_percent: number; memory_used_mb: number; memory_total_mb: number; power_draw_w: number };
+		containers: Container[];
+	}
+
+	async function loadStats() {
+		try {
+			const res = await fetch('https://stats.appvia.net/stats');
+			if (!res.ok) throw new Error('non-200');
+			const d: Stats = await res.json();
+
+			set('s-uptime', d.uptime);
+
+			set('s-cpu', d.cpu.usage_percent.toFixed(1) + '%');
+			setBar('b-cpu', d.cpu.usage_percent);
+			set('s-cpu-load', `Load: ${d.cpu.load_1m} / ${d.cpu.load_5m} / ${d.cpu.load_15m} · ${d.cpu.cores} cores`);
+
+			set('s-mem', d.memory.percent.toFixed(1) + '%');
+			setBar('b-mem', d.memory.percent);
+			set('s-mem-detail', `${d.memory.used_gb} GB / ${d.memory.total_gb} GB`);
+
+			set('s-disk', d.disk.percent.toFixed(1) + '%');
+			setBar('b-disk', d.disk.percent);
+			set('s-disk-detail', `${d.disk.used_gb} GB / ${d.disk.total_gb} GB`);
+
+			set('s-gpu-name', d.gpu.name);
+			set('s-gpu-temp', d.gpu.temperature_c + '°C');
+			set('s-gpu-util', d.gpu.utilization_percent + '%');
+			set('s-gpu-vram', `${(d.gpu.memory_used_mb / 1024).toFixed(1)} / ${(d.gpu.memory_total_mb / 1024).toFixed(0)} GB`);
+			set('s-gpu-power', d.gpu.power_draw_w.toFixed(1) + ' W');
+
+			const grid = document.getElementById('s-containers');
+			if (grid) {
+				grid.innerHTML = d.containers.map(c => `
+					<div class="container-row">
+						<span class="c-dot ${dotClass(c.status)}"></span>
+						<span class="c-name">${toTitle(c.name)}</span>
+						<span class="c-status">${c.status}</span>
+					</div>
+				`).join('');
+			}
+
+			set('s-updated', 'Updated ' + new Date().toLocaleTimeString());
+
+			const loading = document.getElementById('dash-loading');
+			const content = document.getElementById('dash-content');
+			if (loading) loading.style.display = 'none';
+			if (content) content.style.display = '';
+		} catch {
+			const loading = document.getElementById('dash-loading');
+			const error = document.getElementById('dash-error');
+			if (loading) loading.style.display = 'none';
+			if (error) error.style.display = '';
+		}
+	}
+
+	loadStats();
+	setInterval(loadStats, 30000);
+</script>

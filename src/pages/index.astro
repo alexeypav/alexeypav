@@ -13,14 +13,47 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>Alexey Pavlenko</h1>
-			<ul>
-				<li>Technology enthusiast and tinkerer - I enjoy working with things either via code/computer or by hand.</li>
-				<li>Currently living in Sydney, Australia, working as a Platfrom Engineer with a focus on Cloud/DevOps/Infra.</li>
-				<li><a href="https://nz.linkedin.com/in/alexey-pavlenko-8687a373">Linkedin</a></li>
-				<li><a href="https://github.com/alexeypav">Github</a></li>
-			</ul>
+			<div class="hero">
+				<img src="/me_headshot.jpg" alt="Alexey Pavlenko" class="headshot" />
+				<div class="intro">
+					<h1>Alexey Pavlenko</h1>
+					<ul>
+						<li>Technology enthusiast and tinkerer - I enjoy working with things either via code/computer or by hand.</li>
+						<li>Currently living in Sydney, Australia, working as a Platfrom Engineer with a focus on Cloud/DevOps/Infra.</li>
+						<li><a href="https://nz.linkedin.com/in/alexey-pavlenko-8687a373">Linkedin</a></li>
+						<li><a href="https://github.com/alexeypav">Github</a></li>
+					</ul>
+				</div>
+			</div>
 		</main>
+
+		<style>
+			.hero {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+				flex-wrap: wrap;
+			}
+			.headshot {
+				width: 180px;
+				height: 180px;
+				border-radius: 50%;
+				object-fit: cover;
+				object-position: top;
+				flex-shrink: 0;
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+			}
+			.intro {
+				flex: 1;
+				min-width: 200px;
+			}
+			@media (max-width: 480px) {
+				.hero {
+					flex-direction: column;
+					align-items: flex-start;
+				}
+			}
+		</style>
 		<Footer />
 	</body>
 </html>
