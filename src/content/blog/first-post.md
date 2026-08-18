@@ -59,4 +59,4 @@ For the first time since I acquired it, I had a Wang APC that would power up and
 
 This ended up being a good example of why spare machines and parts are so useful when working with uncommon vintage computers. Without the second APC, it would have been much harder to identify which parts of the original machine were still usable.
 
-There is still more I would like to investigate, including the keyboard error codes, disk drives and available software, but for now it is satisfying to have one complete and working Wang APC assembled from the two systems.
+There is still more I would like to investigate, try to find more software in various archive niches on the web, I would live to find the IBM emulation board to be able to run IBM compatible software that doesn;t work natively on the Wang; there do appear to be some floating around, but for now it is satisfying to have one complete and working Wang APC.
